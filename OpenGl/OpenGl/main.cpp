@@ -23,8 +23,13 @@ const char* WINDOW_TITLE= "OpenGl";
 Vector3f CAMERA_POSITION;
 Vector3f CAMERA_ROTATION;
 
+bool KEYS[256];
+
 void reshape(int w, int h);
 void display();
+void keyboardDown(unsigned char key, int x,int y);
+void keyboardUp(unsigned char key, int x,int y);
+void inputActions();
 
 int main(int argc, char ** argv)
 {
@@ -38,10 +43,47 @@ int main(int argc, char ** argv)
     
     glutReshapeFunc(reshape);
     glutDisplayFunc(display);
+    glutIdleFunc(display);
+    
+    glutKeyboardFunc(keyboardDown);
+    glutKeyboardUpFunc(keyboardUp);
     
     glutMainLoop();
     
     return 0;
+}
+
+void keyboardDown(unsigned char key, int x,int y)
+{
+    KEYS[key] = true;
+    
+}
+void keyboardUp(unsigned char key, int x,int y)
+{
+    KEYS[key] = false;
+    
+}
+void inputActions()
+{
+    if(KEYS['w']){
+        CAMERA_POSITION.z += 0.01;
+        
+    }
+    if(KEYS['s']){
+        CAMERA_POSITION.z -= 0.01;
+        
+    }
+    if(KEYS['a']){
+        CAMERA_POSITION.x -= 0.01;
+        
+    }
+    if(KEYS['d']){
+        CAMERA_POSITION.x += 0.01;
+
+        
+    }
+
+
 }
 void reshape(int w, int h)
 {
@@ -63,11 +105,13 @@ void reshape(int w, int h)
 }
 void display()
 {
+    inputActions();
+    
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
     
     
-    glTranslatef(CAMERA_POSITION.x, CAMERA_POSITION.y, CAMERA_POSITION.z);
+    glTranslatef(-CAMERA_POSITION.x, -CAMERA_POSITION.y, CAMERA_POSITION.z);
     glRotatef(CAMERA_ROTATION.x, 1, 0, 0);
     glRotatef(CAMERA_ROTATION.y, 0, 1, 0);
     glRotatef(CAMERA_ROTATION.z, 0, 0, 1);
