@@ -12,6 +12,8 @@
 		3758E5EF18158CFC00C7C186 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3758E5ED18158CFC00C7C186 /* OpenAL.framework */; };
 		3758E5F018158CFC00C7C186 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3758E5EE18158CFC00C7C186 /* OpenGL.framework */; };
 		3758E5F218158D1000C7C186 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3758E5F118158D1000C7C186 /* GLUT.framework */; };
+		375FFE341817883200FC1CFA /* Mouse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 375FFE321817883200FC1CFA /* Mouse.cpp */; };
+		375FFE371817927F00FC1CFA /* Keyboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 375FFE351817927F00FC1CFA /* Keyboard.cpp */; };
 		37F1943018159C10002AB51A /* Vector3f.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37F1942E18159C10002AB51A /* Vector3f.cpp */; };
 /* End PBXBuildFile section */
 
@@ -35,6 +37,10 @@
 		3758E5ED18158CFC00C7C186 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
 		3758E5EE18158CFC00C7C186 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		3758E5F118158D1000C7C186 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		375FFE321817883200FC1CFA /* Mouse.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Mouse.cpp; sourceTree = "<group>"; };
+		375FFE331817883200FC1CFA /* Mouse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mouse.h; sourceTree = "<group>"; };
+		375FFE351817927F00FC1CFA /* Keyboard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Keyboard.cpp; sourceTree = "<group>"; };
+		375FFE361817927F00FC1CFA /* Keyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Keyboard.h; sourceTree = "<group>"; };
 		37F1942E18159C10002AB51A /* Vector3f.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Vector3f.cpp; sourceTree = "<group>"; };
 		37F1942F18159C10002AB51A /* Vector3f.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vector3f.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -79,6 +85,10 @@
 				3758E5E618158C9B00C7C186 /* OpenGl.1 */,
 				37F1942F18159C10002AB51A /* Vector3f.h */,
 				37F1942E18159C10002AB51A /* Vector3f.cpp */,
+				375FFE331817883200FC1CFA /* Mouse.h */,
+				375FFE321817883200FC1CFA /* Mouse.cpp */,
+				375FFE361817927F00FC1CFA /* Keyboard.h */,
+				375FFE351817927F00FC1CFA /* Keyboard.cpp */,
 			);
 			path = OpenGl;
 			sourceTree = "<group>";
@@ -134,7 +144,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				375FFE341817883200FC1CFA /* Mouse.cpp in Sources */,
 				3758E5E518158C9B00C7C186 /* main.cpp in Sources */,
+				375FFE371817927F00FC1CFA /* Keyboard.cpp in Sources */,
 				37F1943018159C10002AB51A /* Vector3f.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

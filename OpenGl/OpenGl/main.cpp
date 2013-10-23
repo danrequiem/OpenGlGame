@@ -7,29 +7,50 @@
 //
 
 #include <iostream>
+#include <cmath>
 
 #include <OpenGL/gl.h>
 #include <OpenAL/al.h>
 #include <OpenAL/alc.h>
 #include <GLUT/glut.h>
 
-#import "Vector3f.h"
+#include "Keyboard.h"
+#include "Mouse.h"
+#include "Vector3f.h"
 
 using namespace std;
+
 const int WINDOW_WIDTH= 1280;
 const int WINDOW_HEIGHT= 720;
 const char* WINDOW_TITLE= "OpenGl";
 
+const float WALKING_SPEED = 1.0;
+const float MOUSE_SENSITIVITY = 1.0;
+
+const float MAX_TILT = 70;
+
+float LAST_TIME;
+float CURRENT_TIME;
+float DELTA_TIME;
+
+int MOUSE_LAST_X;
+int MOUSE_LAST_Y;
+int MOUSE_CURRENT_X;
+int MOUSE_CURRENT_Y;
+int MOUSE_DELTA_X;
+int MOUSE_DELTA_Y;
+
+
 Vector3f CAMERA_POSITION;
 Vector3f CAMERA_ROTATION;
 
-bool KEYS[256];
-
 void reshape(int w, int h);
 void display();
-void keyboardDown(unsigned char key, int x,int y);
-void keyboardUp(unsigned char key, int x,int y);
-void inputActions();
+void preProcesEvents();
+
+double degreesToRadians(double degrees);
+double dsin(double theta);
+double dcos(double theta);
 
 int main(int argc, char ** argv)
 {
@@ -45,40 +66,53 @@ int main(int argc, char ** argv)
     glutDisplayFunc(display);
     glutIdleFunc(display);
     
-    glutKeyboardFunc(keyboardDown);
-    glutKeyboardUpFunc(keyboardUp);
+    glutKeyboardFunc(Keyboard::keyboardDown);
+    glutKeyboardUpFunc(Keyboard::keyboardUp);
+    
+    glutMotionFunc(Mouse::move);
+    glutPassiveMotionFunc(Mouse::move);
     
     glutMainLoop();
     
     return 0;
 }
+void preProcesEvents()
+{
+    CURRENT_TIME =((float) glutGet(GLUT_ELAPSED_TIME))/ 1000;
+    
+    DELTA_TIME = CURRENT_TIME - LAST_TIME;
+    LAST_TIME = CURRENT_TIME;
+    
+    Mouse::update();
 
-void keyboardDown(unsigned char key, int x,int y)
-{
-    KEYS[key] = true;
+    CAMERA_ROTATION.y += (float)Mouse::deltaX*MOUSE_SENSITIVITY;
+    CAMERA_ROTATION.x += (float)Mouse::deltaY*MOUSE_SENSITIVITY;
     
-}
-void keyboardUp(unsigned char key, int x,int y)
-{
-    KEYS[key] = false;
+    if(CAMERA_ROTATION.x > MAX_TILT){
+        CAMERA_ROTATION.x = MAX_TILT;
+    }
+    if(CAMERA_ROTATION.x < -MAX_TILT){
+        CAMERA_ROTATION.x = -MAX_TILT;
+    }
     
-}
-void inputActions()
-{
-    if(KEYS['w']){
-        CAMERA_POSITION.z += 0.01;
+    if(Keyboard::keys['w']){
+        CAMERA_POSITION.x += (WALKING_SPEED*DELTA_TIME)*dsin(CAMERA_ROTATION.y);
+        CAMERA_POSITION.z += (WALKING_SPEED*DELTA_TIME)*dcos(CAMERA_ROTATION.y);
         
     }
-    if(KEYS['s']){
-        CAMERA_POSITION.z -= 0.01;
+    if(Keyboard::keys['s']){
+        CAMERA_POSITION.x += (WALKING_SPEED*DELTA_TIME)*dsin(CAMERA_ROTATION.y +180);
+        CAMERA_POSITION.z += (WALKING_SPEED*DELTA_TIME)*dcos(CAMERA_ROTATION.y +180);
         
     }
-    if(KEYS['a']){
-        CAMERA_POSITION.x -= 0.01;
+    if(Keyboard::keys['a']){
+        CAMERA_POSITION.x += (WALKING_SPEED*DELTA_TIME)*dsin(CAMERA_ROTATION.y + 270);
+        CAMERA_POSITION.z += (WALKING_SPEED*DELTA_TIME)*dcos(CAMERA_ROTATION.y + 270);
         
     }
-    if(KEYS['d']){
-        CAMERA_POSITION.x += 0.01;
+    if(Keyboard::keys['d']){
+        CAMERA_POSITION.x += (WALKING_SPEED*DELTA_TIME)*dsin(CAMERA_ROTATION.y + 90);
+        CAMERA_POSITION.z += (WALKING_SPEED*DELTA_TIME)*dcos(CAMERA_ROTATION.y + 90);
 
         
     }
@@ -105,28 +139,41 @@ void reshape(int w, int h)
 }
 void display()
 {
-    inputActions();
+    preProcesEvents();
     
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
     
     
-    glTranslatef(-CAMERA_POSITION.x, -CAMERA_POSITION.y, CAMERA_POSITION.z);
+
     glRotatef(CAMERA_ROTATION.x, 1, 0, 0);
     glRotatef(CAMERA_ROTATION.y, 0, 1, 0);
     glRotatef(CAMERA_ROTATION.z, 0, 0, 1);
+    glTranslatef(-CAMERA_POSITION.x, -CAMERA_POSITION.y, CAMERA_POSITION.z);
     
-    glBegin(GL_TRIANGLES);
+  
     
   
     glColor3f(1.0, 0.0, 0.0);
-    glVertex3f(-1, -1,-3);
+    glutWireCube(0.5);
+    glColor3f(0.0, 1.0, 0.0);
+    glutWireCube(1);
+   /* glVertex3f(-1, -1,-3);
     glColor3f(0.0, 1.0, 0.0);
     glVertex3f(0, 1,-3);
     glColor3f(0.0, 0.0, 1.0);
-    glVertex3f(1, -1,-3);
+    glVertex3f(1, -1,-3);*/
     
     glEnd();
     
     glutSwapBuffers();
+}
+double degreesToRadians(double degrees){
+    return  degrees*M_PI/180;
+}
+double dsin(double theta){
+    return sin(degreesToRadians(theta));
+}
+double dcos(double theta){
+    return cos(degreesToRadians(theta));
 }
